@@ -6,6 +6,7 @@ Simple table formatting for C++
 * Cell content is automatically into multiple lines if it extends the column width
 * Columns can be formatted horizontally (left, center, right) and vertically (top, middle, bottom)
 * Stream semantics are supported including stream manipulators
+* Nested tables can easily be created
 
 ## How to use it?
 
@@ -41,3 +42,6 @@ std::cout << formatter.toString() << std::endl;
 |----------|----------|----------|
 ```
 
+## Todo
+
+* Add more documentation
