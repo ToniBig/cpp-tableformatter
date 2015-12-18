@@ -1,6 +1,8 @@
 # cpp-tableformatter
 Simple table formatting for C++
 
+[![Build Status](https://travis-ci.org/ToniBig/cpp-tableformatter.svg?branch=master)](https://travis-ci.org/ToniBig/cpp-tableformatter)
+
 ## Features
 
 * Cell content is automatically into multiple lines if it extends the column width
