@@ -95,7 +95,22 @@ SECTION("Simple usage")
   formatter << "Hello beautiful world!";
   formatter << "Hello beautiful world!";
   formatter << "Hello beautiful world!";
+  formatter << "Hello beautiful world!";
+  formatter << "Hello beautiful world!";
+  formatter << "Hello beautiful world!";
   formatter.addHorizontalLine('-');
+
+  std::string reference =
+  "|----------|----------|----------|\n"
+  "|Hello     |Hello     |Hello     |\n"
+  "|beautiful |beautiful |beautiful |\n"
+  "|world!    |world!    |world!    |\n"
+  "|Hello     |Hello     |Hello     |\n"
+  "|beautiful |beautiful |beautiful |\n"
+  "|world!    |world!    |world!    |\n"
+  "|----------|----------|----------|\n";
+
+  CHECK( reference == formatter.toString());
 
 //  std::cout << formatter.toString() << std::endl;
 }

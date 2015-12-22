@@ -244,23 +244,27 @@ inline void TableFormatter::digestRowStream( )
   auto rowData = rowStream.getData( );
   rowStream.clear( );
 
-  size_t numberOfRows = std::ceil( static_cast<double>( rowData.size( ) ) / numberOfColumns );
-  auto start = rowData.begin( );
-
-  for ( size_t i = 0; i < numberOfRows; ++i )
+  if ( rowData.empty( ) == false )
   {
-    auto offset = std::min( numberOfColumns, static_cast<size_t>( std::distance( start, rowData.end( ) ) ) );
-    StringVector currentRow( start, start + offset );
+    size_t numberOfRows = std::ceil( static_cast<double>( rowData.size( ) ) / numberOfColumns );
 
-    auto gap = numberOfColumns - offset;
-    for ( size_t j = 0; j < gap; ++j )
+    auto start = rowData.begin( );
+
+    for ( size_t i = 0; i < numberOfRows; ++i )
     {
-      currentRow.push_back( "" );
-    } // end of j-loop
+      auto offset = std::min( numberOfColumns, static_cast<size_t>( std::distance( start, rowData.end( ) ) ) );
+      StringVector currentRow( start, start + offset );
 
-    this->addRow( currentRow );
-    start += numberOfRows + 1;
-  } // end of i-loop
+      auto gap = numberOfColumns - offset;
+      for ( size_t j = 0; j < gap; ++j )
+      {
+        currentRow.push_back( "" );
+      } // end of j-loop
+
+      this->addRow( currentRow );
+      start += numberOfColumns;
+    } // end of i-loop
+  }
 }
 
 inline void TableFormatter::addRow( const StringVector& row )
