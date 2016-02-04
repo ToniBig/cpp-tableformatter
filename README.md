@@ -157,8 +157,6 @@ int main( int argc,
 ```
 This results in the following output:
 ```
-This results in the following output:
-```
 | i |x           |x^2         |x^2-x       |
 |---|------------|------------|------------|
 | 0 |0.000000e+00|0.000000    |0.000000    |
