@@ -114,67 +114,6 @@ This results in the following output:
 |---||----------|------------|------------|
 ```
 
-### A numerical example
-This final example show how stream manipulators can be used to format the content of a table conveniently. The main focus here is on formatting on floating point number however. Note, that not all of the available stream modifiers are supported yet.
-```c++
-#include "tableformatter.hpp"
-#include <iomanip>
-
-int main( int argc,
-          char **argv )
-{
-  namespace tf = tableformatter;
-
-  tf::TableFormatter formatter( 4, 12 );
-
-  formatter << "i" << "x" << "x^2" << "x^2-x";
-
-  tf::CellFormatter column1( 3 );
-  column1.horizontalAlignment = tf::HORIZONTAL::CENTER;
-  formatter.setCellFormatter( column1, 0 );
-
-  formatter.addHorizontalLine( '-' );
-
-  size_t steps = 10;
-
-  for ( size_t i = 0; i < steps; ++i )
-  {
-    double x = 1.0 / steps * i;
-    double x2 = x * x;
-    double x2_x = x2 - x;
-
-    formatter << i;
-    formatter << std::scientific << x;
-    formatter << std::fixed << x2;
-    formatter << x2_x;
-
-  } // end of i-loop
-
-  formatter.addHorizontalLine( '-' );
-
-  std::cout << formatter.toString( ) << std::endl;
-}
-```
-This results in the following output:
-```
-This results in the following output:
-```
-| i |x           |x^2         |x^2-x       |
-|---|------------|------------|------------|
-| 0 |0.000000e+00|0.000000    |0.000000    |
-| 1 |1.000000e-01|0.010000    |-0.090000   |
-| 2 |2.000000e-01|0.040000    |-0.160000   |
-| 3 |3.000000e-01|0.090000    |-0.210000   |
-| 4 |4.000000e-01|0.160000    |-0.240000   |
-| 5 |5.000000e-01|0.250000    |-0.250000   |
-| 6 |6.000000e-01|0.360000    |-0.240000   |
-| 7 |7.000000e-01|0.490000    |-0.210000   |
-| 8 |8.000000e-01|0.640000    |-0.160000   |
-| 9 |9.000000e-01|0.810000    |-0.090000   |
-|---|------------|------------|------------|
-```
-
 ## Todo
 
 * Add more documentation
-* Support all stream manipulators (setprecision, setwidth, endl)

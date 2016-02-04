@@ -33,3 +33,4 @@ ADD_DEPENDENCIES ( run_${PROJECT_NAME}_tests
 
 ADD_EXECUTABLE ( example1 example/example1.cpp )
 ADD_EXECUTABLE ( example2 example/example2.cpp )
+ADD_EXECUTABLE ( example3 example/example3.cpp )
