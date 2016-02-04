@@ -1,20 +1,18 @@
-#include "../include/tableformatter.hpp"
+#include "../inc/tableformatter.hpp"
 
 int main( int argc,
           char **argv )
 {
-  tableformatter::TableFormatter formatter( 4, 8 );
+  namespace tf = tableformatter;
 
-  formatter.addHorizontalLine( '=' );
-  formatter << std::fixed << 1.23 << std::scientific << 1.23 << std::hex << 123 << std::oct << 123;
-  formatter << std::fixed << 1.23 << std::scientific << 1.23 << std::hex << 123 << std::oct << 123;
-  formatter << std::fixed << 1.23 << std::scientific << 1.23 << std::hex << 123 << std::oct << 123;
+  tf::TableFormatter formatter( 3, 10 );
+
   formatter.addHorizontalLine( '-' );
-  formatter << std::fixed << 1.23 << std::scientific << 1.23 << std::hex << 123 << std::oct << 123;
-  formatter << std::fixed << 1.23 << std::scientific << 1.23 << std::hex << 123 << std::oct << 123;
-  formatter << std::fixed << 1.23 << std::scientific << 1.23 << std::hex << 123 << std::oct << 123;
-  formatter.addHorizontalLine( '=' );
+  formatter << "Hello beautiful world!";
+  formatter << "Hello beautiful world!";
+  formatter << "Hello beautiful world!";
+  formatter.addHorizontalLine( '-' );
 
-  std::cout << "output: \n" << formatter.toString( ) << std::endl;
+  std::cout << formatter.toString( ) << std::endl;
 }
 

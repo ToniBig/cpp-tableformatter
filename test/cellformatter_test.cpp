@@ -53,7 +53,7 @@ TEST_CASE("CellFormatter")
 }
 
   SECTION("Middle aligment"){
-  cellFormatter.verticalAlignement=VERTICAL::MIDDLE;
+  cellFormatter.verticalAlignment=VERTICAL::MIDDLE;
 
   SECTION( "Left alignment with + padding" )
   {
@@ -93,7 +93,7 @@ TEST_CASE("CellFormatter")
   }
 }
   SECTION("Bottom aligment"){
-  cellFormatter.verticalAlignement=VERTICAL::BOTTOM;
+  cellFormatter.verticalAlignment=VERTICAL::BOTTOM;
 
   SECTION( "Left alignment with + padding" )
   {

@@ -57,7 +57,7 @@ struct CellFormatter
   size_t width;
   char paddingCharacter = ' ';
   HORIZONTAL horizontalAlignment = HORIZONTAL::LEFT;
-  VERTICAL verticalAlignement = VERTICAL::TOP;
+  VERTICAL verticalAlignment = VERTICAL::TOP;
 
   CellFormatter( size_t _width );
 
@@ -169,14 +169,14 @@ inline StringVector CellFormatter::formatCellContent( const StringVector& unform
 
   size_t currentIndex = 0;
 
-  if ( verticalAlignement == VERTICAL::TOP )
+  if ( verticalAlignment == VERTICAL::TOP )
   {
   }
-  else if ( verticalAlignement == VERTICAL::MIDDLE )
+  else if ( verticalAlignment == VERTICAL::MIDDLE )
   {
     currentIndex = ( maximumNumberOfRows - numberOfFilledRows ) / 2;
   }
-  else if ( verticalAlignement == VERTICAL::BOTTOM )
+  else if ( verticalAlignment == VERTICAL::BOTTOM )
   {
     currentIndex = numberOfEmptyRows;
   }
@@ -343,7 +343,7 @@ inline StringVector TableFormatter::createChunks( std::string cellString,
       {
         lines.push_back( splitString.substr( 0, columnWidth ) );
         length = splitString.size( ) - columnWidth;
-        splitString = splitString.substr( columnWidth - 1, length );
+        splitString = splitString.substr( columnWidth, length );
       }
 
       splitString = splitString.substr( 0, length );
