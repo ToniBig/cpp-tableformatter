@@ -115,7 +115,7 @@ This results in the following output:
 ```
 
 ### A numerical example
-This final example show how stream manipulators can be used to format the content of a table conveniently. The main focus here is on formatting on floating point number however. Note, that not all of the available stream modifiers are supported yet.
+This final example shows how stream manipulators can be used to format the content of a table conveniently. The main focus here is on formatting floating point numbers.
 ```c++
 #include "tableformatter.hpp"
 #include <iomanip>
@@ -125,7 +125,7 @@ int main( int argc,
 {
   namespace tf = tableformatter;
 
-  tf::TableFormatter formatter( 4, 12 );
+  tf::TableFormatter formatter( 4, 14 );
 
   formatter << "i" << "x" << "x^2" << "x^2-x";
 
@@ -144,9 +144,9 @@ int main( int argc,
     double x2_x = x2 - x;
 
     formatter << i;
-    formatter << std::scientific << x;
-    formatter << std::fixed << x2;
-    formatter << x2_x;
+    formatter << std::setprecision( 4 ) << std::scientific << x;
+    formatter << std::fixed << std::showpos << x2;
+    formatter << std::setprecision( i ) << x2_x;
 
   } // end of i-loop
 
@@ -157,22 +157,21 @@ int main( int argc,
 ```
 This results in the following output:
 ```
-| i |x           |x^2         |x^2-x       |
-|---|------------|------------|------------|
-| 0 |0.000000e+00|0.000000    |0.000000    |
-| 1 |1.000000e-01|0.010000    |-0.090000   |
-| 2 |2.000000e-01|0.040000    |-0.160000   |
-| 3 |3.000000e-01|0.090000    |-0.210000   |
-| 4 |4.000000e-01|0.160000    |-0.240000   |
-| 5 |5.000000e-01|0.250000    |-0.250000   |
-| 6 |6.000000e-01|0.360000    |-0.240000   |
-| 7 |7.000000e-01|0.490000    |-0.210000   |
-| 8 |8.000000e-01|0.640000    |-0.160000   |
-| 9 |9.000000e-01|0.810000    |-0.090000   |
-|---|------------|------------|------------|
+| i |x             |x^2           |x^2-x         |
+|---|--------------|--------------|--------------|
+| 0 |0.0000e+00    |+0.000000     |0             |
+| 1 |1.0000e-01    |+0.010000     |-0.1          |
+| 2 |2.0000e-01    |+0.040000     |-0.16         |
+| 3 |3.0000e-01    |+0.090000     |-0.210        |
+| 4 |4.0000e-01    |+0.160000     |-0.2400       |
+| 5 |5.0000e-01    |+0.250000     |-0.25000      |
+| 6 |6.0000e-01    |+0.360000     |-0.240000     |
+| 7 |7.0000e-01    |+0.490000     |-0.2100000    |
+| 8 |8.0000e-01    |+0.640000     |-0.16000000   |
+| 9 |9.0000e-01    |+0.810000     |-0.090000000  |
+|---|--------------|--------------|--------------|
 ```
 
 ## Todo
 
 * Add more documentation
-* Support all stream manipulators (setprecision, setwidth, endl)

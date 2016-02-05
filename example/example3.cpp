@@ -6,7 +6,7 @@ int main( int argc,
 {
   namespace tf = tableformatter;
 
-  tf::TableFormatter formatter( 4, 12 );
+  tf::TableFormatter formatter( 4, 14 );
 
   formatter << "i" << "x" << "x^2" << "x^2-x";
 
@@ -25,9 +25,9 @@ int main( int argc,
     double x2_x = x2 - x;
 
     formatter << i;
-    formatter << std::scientific << x;
-    formatter << std::fixed << x2;
-    formatter << x2_x;
+    formatter << std::setprecision( 4 ) << std::scientific << x;
+    formatter << std::fixed << std::showpos << x2;
+    formatter << std::setprecision( i ) << x2_x;
 
   } // end of i-loop
 

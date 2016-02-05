@@ -3,9 +3,11 @@
 // --- Standard Includes ---
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <string>
 #include <iterator>
+#include <type_traits>
 
 namespace tableformatter
 {
@@ -67,8 +69,70 @@ struct CellFormatter
 
 typedef std::vector<CellFormatter> CellFormatterVector;
 
+template<typename T, typename U, typename ... Ts>
+struct is_any_of : is_any_of<T, Ts...>
+{
+};
+
+template<typename T, typename ... Ts>
+struct is_any_of<T, T, Ts...> : std::true_type
+{
+};
+
+template<typename T, typename U>
+struct is_any_of<T, U> : std::false_type
+{
+};
+
+template<typename T>
+struct is_any_of<T, T> : std::true_type
+{
+};
+
+struct StreamReset
+{
+  std::ios_base::fmtflags saveflags;
+  std::streamsize prec;
+  std::streamsize width;
+
+  void getState( std::stringstream& stream )
+  {
+    saveflags = stream.flags( );
+    prec = stream.precision( );
+    width = stream.width( );
+  }
+
+  void setState( std::stringstream& stream )
+  {
+//    stream.flags( saveflags );
+    stream.precision( prec );
+    stream.width( width );
+
+    stream.unsetf( std::ios_base::dec );
+    stream.unsetf( std::ios_base::oct );
+    stream.unsetf( std::ios_base::hex );
+    stream.unsetf( std::ios_base::basefield );
+    stream.unsetf( std::ios_base::left );
+    stream.unsetf( std::ios_base::right );
+    stream.unsetf( std::ios_base::internal );
+    stream.unsetf( std::ios_base::adjustfield );
+    stream.unsetf( std::ios_base::boolalpha );
+    stream.unsetf( std::ios_base::showbase );
+    stream.unsetf( std::ios_base::showpoint );
+    stream.unsetf( std::ios_base::showpos );
+    stream.unsetf( std::ios_base::skipws );
+    stream.unsetf( std::ios_base::unitbuf );
+    stream.unsetf( std::ios_base::uppercase );
+  }
+};
+
 struct RowStream
 {
+  RowStream( )
+  {
+    reset.getState( stream );
+  }
+
   StringVector getData( ) const
   {
     return cells;
@@ -91,10 +155,21 @@ struct RowStream
   {
     stream << input;
 
-    cells.push_back( stream.str( ) );
+    // Check if none of the following structs have been passed
+    if ( not is_any_of<T, std::_Setfill<char>, std::_Setiosflags, std::_Resetiosflags, std::_Setbase, std::_Setprecision, std::_Setw>::value )
+    {
+      cells.push_back( stream.str( ) );
+      stream.clear( );
+      stream.str( std::string( ) );
+      reset.setState( stream );
 
-    stream.str( std::string( ) );
-    stream.clear( );
+      std::cout << "Got input: " << input << std::endl;
+      std::cout << "cells.back(): " << cells.back( ) << std::endl;
+    }
+    else
+    {
+      std::cout << "Got modifier" << std::endl;
+    }
 
     return *this;
   }
@@ -103,12 +178,35 @@ struct RowStream
   {
     func( stream );
 
+    std::cout << "Got modified (ios_base)" << std::endl;
+
+    return *this;
+  }
+
+  template<typename CharT, typename Traits>
+  RowStream& operator<<( std::basic_ios<CharT, Traits>& (*func)( std::basic_ios<CharT, Traits>& ) )
+  {
+    func( stream );
+
+    std::cout << "Got modified (basic_ios)" << std::endl;
+
+    return *this;
+  }
+
+  template<typename CharT, typename Traits>
+  RowStream& operator<<( std::basic_ostream<CharT, Traits>& (*func)( std::basic_ostream<CharT, Traits>& ) )
+  {
+    func( stream );
+
+    std::cout << "Got modified (basic_ostream)" << std::endl;
+
     return *this;
   }
 
 private:
   std::vector<std::string> cells;
   std::stringstream stream;
+  StreamReset reset;
 };
 
 class TableFormatter
