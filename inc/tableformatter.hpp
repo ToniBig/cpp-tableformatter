@@ -32,12 +32,10 @@ inline StringVector splitAtLineBreaks( const std::string& cellString )
 
   StringVector lines;
 
-  while ( !cellStream.eof( ) )
+  for ( std::string line; std::getline( cellStream, line ); )
   {
-    std::string line;
-    getline( cellStream, line );
     lines.push_back( line );
-  }
+  } // end of line-loop
 
   return lines;
 }
@@ -104,7 +102,6 @@ struct StreamReset
 
   void setState( std::stringstream& stream )
   {
-//    stream.flags( saveflags );
     stream.precision( prec );
     stream.width( width );
 
@@ -162,13 +159,6 @@ struct RowStream
       stream.clear( );
       stream.str( std::string( ) );
       reset.setState( stream );
-
-      std::cout << "Got input: " << input << std::endl;
-      std::cout << "cells.back(): " << cells.back( ) << std::endl;
-    }
-    else
-    {
-      std::cout << "Got modifier" << std::endl;
     }
 
     return *this;
@@ -178,8 +168,6 @@ struct RowStream
   {
     func( stream );
 
-    std::cout << "Got modified (ios_base)" << std::endl;
-
     return *this;
   }
 
@@ -188,8 +176,6 @@ struct RowStream
   {
     func( stream );
 
-    std::cout << "Got modified (basic_ios)" << std::endl;
-
     return *this;
   }
 
@@ -197,8 +183,6 @@ struct RowStream
   RowStream& operator<<( std::basic_ostream<CharT, Traits>& (*func)( std::basic_ostream<CharT, Traits>& ) )
   {
     func( stream );
-
-    std::cout << "Got modified (basic_ostream)" << std::endl;
 
     return *this;
   }
@@ -342,7 +326,7 @@ inline void TableFormatter::digestRowStream( )
   auto rowData = rowStream.getData( );
   rowStream.clear( );
 
-  if ( rowData.empty( ) == false )
+  if ( not rowData.empty( ) )
   {
     size_t numberOfRows = std::ceil( static_cast<double>( rowData.size( ) ) / numberOfColumns );
 
